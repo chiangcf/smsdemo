@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
     private Uri uriContact;
     private String contactID;     // contacts unique ID
+    ArrayList<Contact> conList;
 
     /**
      * On Run time method
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        conList = new ArrayList<>();
         requestPerms();
 
     }
@@ -46,9 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
             String name = retrieveContactName();
             String num = retrieveContactNumber();
-
-            String combo = name + ": " + num;
-            Toast.makeText(getApplicationContext(), combo, Toast.LENGTH_SHORT).show();
+            conList.add(new Contact(name,num));
 
         }
     }
@@ -66,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
      * btn2: Opens Contact List
      */
     public void openContactList(View btnSelectContact) {
-
         // Intent.ACTION_PICK = Pick an item from the data, returning what was selected
         startActivityForResult(new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI), 1);
     }
