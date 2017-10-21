@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
     private Uri uriContact;
     private String contactID;     // contacts unique ID
+    TextView txt1;
     ArrayList<Contact> conList;
 
     /**
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        txt1 = (TextView)findViewById(R.id.txt1);
         conList = new ArrayList<>();
         requestPerms();
 
@@ -49,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
             String num = retrieveContactNumber();
             conList.add(new Contact(name,num));
 
+            setContacts();
+
         }
     }
 
@@ -57,8 +62,7 @@ public class MainActivity extends AppCompatActivity {
      * btn1: Send the SMS
      */
     public void sends(View btnSends) {
-        final Contact[] contacts = mockContacts();
-        sendSMS(contacts);
+        sendSMS();
     }
 
     /**
@@ -67,6 +71,23 @@ public class MainActivity extends AppCompatActivity {
     public void openContactList(View btnSelectContact) {
         // Intent.ACTION_PICK = Pick an item from the data, returning what was selected
         startActivityForResult(new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI), 1);
+    }
+
+    /**
+     * Set Contacts on TextView (txt1)
+     */
+
+    public void setContacts(){
+        String name, num, combo;
+        String total = "";
+        for(int i = 0; i < conList.size(); i++){
+            name = conList.get(i).name;
+            num = conList.get(i).phone;
+            combo = name + " " + num + "\n";
+            total += combo;
+        }
+        txt1.setText(total);
+
     }
 
     /**
@@ -136,13 +157,14 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Sends the SMS to the assign numbers using the SmsManager
      */
-    protected void sendSMS(Contact[] contacts){
+    protected void sendSMS(){
         SmsManager manager = SmsManager.getDefault();
-        String message = contacts[0].name;
-        manager.sendTextMessage(contacts[0].phone, null, message, null, null);
-
-        Toast.makeText(getApplicationContext(), "sent", Toast.LENGTH_SHORT).show();
-
+        for(int i = 0; i < conList.size(); i++){
+            String name = conList.get(i).name;
+            String num = conList.get(i).phone;
+            manager.sendTextMessage(num, null, "Hello " + name, null, null);
+            Log.w("SENT TO: ", name + " " + num);
+        }
 
     }
 
