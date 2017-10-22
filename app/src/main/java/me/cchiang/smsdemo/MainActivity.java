@@ -13,6 +13,10 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 
 import static android.Manifest.permission.*;    // Permissions
@@ -24,8 +28,10 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
     private Uri uriContact;
     private String contactID;     // contacts unique ID
-    TextView txt1;
-    ArrayList<Contact> conList;
+    private TextView txt1;
+    private ArrayList<Contact> conList;
+    private DatabaseReference mDatabase;
+
 
     /**
      * On Run time method
@@ -35,9 +41,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Gets contacts
         txt1 = (TextView)findViewById(R.id.txt1);
         conList = new ArrayList<>();
         requestPerms();
+
+        // Offline
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
+        // Gets the database reference
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
 
     }
 
@@ -75,9 +90,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * btn3: Insert Data to Firebase
+     */
+    public void firefire(View btnFire){
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("contacts");
+
+        // Creating new user node, which returns the unique key value
+        // new user node would be /users/$userid/
+        String userId = mDatabase.push().getKey(); // unique
+
+        // creating user object
+        Contact user = new Contact("Christian", "5158670942");
+
+        // pushing user to 'users' node using the userId
+        mDatabase.child(userId).setValue(user);
+
+    }
+
+
+    /**
      * Set Contacts on TextView (txt1)
      */
-
     public void setContacts(){
         String name, num, combo;
         String total = "";
@@ -154,7 +187,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
     /**
      * Sends the SMS to the assign numbers using the SmsManager
      */
@@ -168,7 +200,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
 
     /**
      * Makes the contact list

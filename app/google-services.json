@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "364773782339",
+    "firebase_url": "https://contacts-storage.firebaseio.com",
+    "project_id": "contacts-storage",
+    "storage_bucket": "contacts-storage.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:364773782339:android:0cf7e71dde8170ce",
+        "android_client_info": {
+          "package_name": "me.cchiang.smsdemo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "364773782339-ee7rohkbmgduiofo3r681qtjq34c0sqh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4Cqat9mYh6xtz5FEJ_nqSF5QvhtY3Iro"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
